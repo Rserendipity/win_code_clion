@@ -6,6 +6,8 @@
 #define INC_3LIST_MYLIST_H
 
 #include <iostream>
+#include "reverse_iterator.h"
+
 
 using std::cout;
 using std::endl;
@@ -55,11 +57,11 @@ namespace cjj {
             return tmp;
         }
 
-        bool operator!=(const self &it) {
+        bool operator!=(const self &it) const {
             return _it != it._it;
         }
 
-        bool operator==(const self &it) {
+        bool operator==(const self &it) const {
             return _it == it._it;
         }
 
@@ -74,12 +76,32 @@ namespace cjj {
         typedef _list_iterator<T, T &, T *> iterator;
         typedef _list_iterator<T, const T &, const T *> const_iterator;
 
+        typedef reverse_iterator<const_iterator, T &, T *> const_reverse_iterator;
+        typedef reverse_iterator<iterator, T &, T *> reverse_iterator;
+
+
         iterator begin() {
             return iterator(_head->next);
         }
 
         iterator end() {
             return iterator(_head);
+        }
+
+        const_iterator begin() const {
+            return iterator(_head->next);
+        }
+
+        const_iterator end() const {
+            return iterator(_head);
+        }
+
+        reverse_iterator rbegin() {
+            return reverse_iterator(end());
+        }
+
+        reverse_iterator rend() {
+            return reverse_iterator(begin());
         }
 
         explicit list() {
@@ -112,6 +134,20 @@ namespace cjj {
             cout << n << endl;
         }
 
+    }
+
+    void test2() {
+        list<int> l1;
+        l1.push_back(10);
+        l1.push_back(20);
+        l1.push_back(30);
+        l1.push_back(40);
+
+        list<int>::reverse_iterator it = l1.rbegin();
+        while (it != l1.rend()) {
+            cout << *it << endl;
+            ++it;
+        }
     }
 
 }
